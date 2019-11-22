@@ -43,6 +43,7 @@ namespace ASMdotNET.x86
         public static Register operator -(Register register, int Offset)
         {
             Register Reg = new Register(register.register);
+            Reg.pointer = register.pointer;
             Reg.appliedOffset = -Offset;
             Reg.usesOffset = true;
             return Reg;

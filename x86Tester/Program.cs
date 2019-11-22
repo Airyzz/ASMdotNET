@@ -69,6 +69,7 @@ namespace x86Tester
                 //pop(eax + 10)
 
                 //mov(0x3004FFFC, eax)
+                push(~esi-08),
                 mov(~ecx+08, 0x260d0800),
                 mov(~eax+1024, 0x260d0800)
                 );
