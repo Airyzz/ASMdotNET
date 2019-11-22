@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ASMdotNET.x86
 {
+    //Commonly used bytes
     public class OpcodeBytes
     {
         public static byte nop = 0x90;
