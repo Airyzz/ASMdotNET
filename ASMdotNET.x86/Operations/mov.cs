@@ -25,10 +25,38 @@ namespace ASMdotNET.x86.Operations
             }
             if (useDword)
             {
-                byte[] operation = new byte[5];
-                operation[0] = (byte)(OpcodeBytes.movdw + r1.register);
-                Buffer.BlockCopy(BitConverter.GetBytes(Value), 0, operation, 1, 4);
-                return operation;
+                if (r1.usesOffset)
+                {
+                    //If offset fits into one byte
+                    if (r1.appliedOffset <= byte.MaxValue && r1.appliedOffset >= byte.MinValue)
+                    {
+                        //mov [eax+10],8
+                        byte[] operation = new byte[7];
+                        operation[0] = 0xC7;
+                        byte registercode = (byte)(r1.register + 0x40);
+                        operation[1] = registercode;
+                        operation[2] = (byte)r1.appliedOffset;
+                        Buffer.BlockCopy(BitConverter.GetBytes(Value), 0, operation, 3, 4);
+                        return operation;
+                    }
+                    else
+                    {
+                        //mov [eax+10],1024
+                        byte[] operation = new byte[10];
+                        operation[0] = 0xC7;
+                        operation[1] = (byte)(r1.register + 0x80);
+                        Buffer.BlockCopy(BitConverter.GetBytes(r1.appliedOffset), 0, operation, 2, 4);
+                        Buffer.BlockCopy(BitConverter.GetBytes(Value), 0, operation, 6, 4);
+                        return operation;
+                    }
+                }
+                else
+                {
+                    byte[] operation = new byte[5];
+                    operation[0] = (byte)(OpcodeBytes.movdw + r1.register);
+                    Buffer.BlockCopy(BitConverter.GetBytes(Value), 0, operation, 1, 4);
+                    return operation;
+                }
             }
             else
             {
