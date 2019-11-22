@@ -62,7 +62,7 @@ namespace ASMdotNET.x86.Operations
             {
                 if (R1.pointer)
                 {
-                    //add [eax],eax
+                    //sub [eax],eax
                     byte registerCode = (byte)(R1.register + 0x8 * (byte)R2.register);
                     return new byte[] { 0x01, registerCode };
                 }
