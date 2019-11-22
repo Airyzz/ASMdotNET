@@ -11,9 +11,18 @@ namespace ASMdotNET.x86.Operations
         private Register r1, r2 = null;
         private int Value;
         public bool useDword;
+        public bool movToPointer;
 
         public override byte[] compile(IntPtr address)
         {
+            if (movToPointer)
+            {
+                byte[] operation = new byte[6];
+                operation[0] = 0x89;
+                operation[1] = (byte)(0x05 + (0x8 * (byte)r1.register));
+                Buffer.BlockCopy(BitConverter.GetBytes(Value), 0, operation, 2, 4);
+                return operation;
+            }
             if (useDword)
             {
                 byte[] operation = new byte[5];
@@ -120,6 +129,14 @@ namespace ASMdotNET.x86.Operations
             r1 = R1;
             r2 = R2;
             useDword = false;
+        }
+
+        public mov(int address, Register R1)
+        {
+            movToPointer = true;
+            useDword = false;
+            r1 = R1;
+            Value = address;
         }
     }
 }

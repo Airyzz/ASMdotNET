@@ -40,6 +40,16 @@ namespace ASMdotNET.x86
             return new mov(r1, r2);
         }
 
+        /// <summary>
+        /// Copy memory
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="r1"></param>
+        /// <returns></returns>
+        public static Operation mov(int address, Register r1)
+        {
+            return new mov(address, r1);
+        }
 
 
         /// <summary>

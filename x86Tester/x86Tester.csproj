@@ -50,7 +50,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ASMdotNET\ASMdotNET.x86.csproj">
+    <ProjectReference Include="..\ASMdotNET.x86\ASMdotNET.x86.csproj">
       <Project>{b11f0a6e-2bfa-4008-83e2-a20c2afe1ee5}</Project>
       <Name>ASMdotNET.x86</Name>
     </ProjectReference>
