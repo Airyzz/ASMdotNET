@@ -15,7 +15,10 @@ namespace x86Tester
         {
             AssemblyCompiler asm = new AssemblyCompiler(0x02DD0000);
 
-            byte[] code = asm.Compile(
+
+            asm.Compile();
+
+            asm.Add(
                 mov(eax, 0x02DD002D),
                 mov(edx, ~eax),
                 mov(eax, 0x02DD0030),
@@ -65,6 +68,8 @@ namespace x86Tester
 
                 //pop(eax + 10)
                 );
+
+            byte[] code = asm.Compile();
 
             Console.WriteLine(BytesToString(code));
             Console.ReadLine();

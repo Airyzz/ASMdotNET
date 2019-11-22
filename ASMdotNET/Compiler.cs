@@ -10,6 +10,7 @@ namespace ASMdotNET.x86
     public class AssemblyCompiler
     {
         byte[] code = new byte[] { };
+        List<Operation> operations = new List<Operation> { };
         IntPtr Address;
 
         public AssemblyCompiler(IntPtr address)
@@ -24,15 +25,38 @@ namespace ASMdotNET.x86
 
         public byte[] Compile(params Operation[] statements)
         {
-            byte[] assembly = new byte[] { };
-            foreach(Operation statement in statements)
+            if (statements.Length == 0)
             {
-                byte[] operation = statement.compile(Address);
-                Address = IntPtr.Add(Address, operation.Length);
-                assembly = Combine(assembly, operation );
-                //resetRegisterFlags();
+                byte[] assembly = new byte[] { };
+                foreach (Operation statement in operations)
+                {
+                    byte[] operation = statement.compile(Address);
+                    Address = IntPtr.Add(Address, operation.Length);
+                    assembly = Combine(assembly, operation);
+                    //resetRegisterFlags();
+                }
+                return assembly;
             }
-            return assembly;
+            else
+            {
+                byte[] assembly = new byte[] { };
+                foreach (Operation statement in statements)
+                {
+                    byte[] operation = statement.compile(Address);
+                    Address = IntPtr.Add(Address, operation.Length);
+                    assembly = Combine(assembly, operation);
+                    //resetRegisterFlags();
+                }
+                return assembly;
+            }
+        }
+
+        public void Add(params Operation[] opcodes)
+        {
+            foreach(Operation operation in opcodes)
+            {
+                operations.Add(operation);
+            }
         }
 
         private byte[] Combine(params byte[][] arrays)
