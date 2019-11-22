@@ -1,6 +1,8 @@
 # ASMdotNET
 A class to compile assembly using a C++ like inline assembly syntax
 
+Note: This library is still a work in progress, and each opcode must be added manually, for both x86 and x64 assembly. A list of supported opcodes can be found [here](https://github.com/Airyzz/ASMdotNET/tree/master/ASMdotNET.x86/Operations).
+
 ## Getting Started
 Add a reference to ASMdotNET to your project and add the following using statements:
 ```csharp
@@ -23,10 +25,10 @@ Writing your code is very similar to C++ inline assembly, or the auto assembler 
 Assembly:
     mov eax,1024
 ASMdotNET:
-    mod(eax, 1024)
+    mov(eax, 1024)
 ```
 
-2. Accessing pointers stored in registers is dont using the Bitwise Complement operator (~)
+2. Accessing pointers stored in registers is achieved by overloading the Bitwise Complement operator (~)
 ```
 Assembly:
     mov [eax],ecx
@@ -39,7 +41,7 @@ ASMdotNet:
 Assembly:
     push ebp
     mov ebp, esp
-    sub esp 08
+    sub esp, 08
     call 0x1FF01F
     mov [ebp],eax
     add esp,08
@@ -48,17 +50,41 @@ Assembly:
     ret
     
 ASMdotNET:
-asm.Compile(
-    push(ebp)
-    mov(ebp, esp)
-    sub(esp 08)
-    call(0x1FF01F)
-    mov(~ebp,eax)
-    add(esp,08)
-    mov(esp, ebp)
-    pop(ebp)
+byte[] code = asm.Compile(
+    push(ebp),
+    mov(ebp, esp),
+    sub(esp, 08),
+    call(0x1FF01F),
+    mov(~ebp - 10,eax),
+    add(esp,08),
+    mov(esp, ebp),
+    pop(ebp),
     ret()
     );
 ```
+
+Opcodes can also be added to a list before compiling, allowing for code generation using C# logic such as loops. 
+
+```csharp
+asm.Add(
+    push(ebp),
+    mov(ebp, esp),
+    sub(esp, 08),
+    call(0x1FF01F),
+    );
     
+if(true)
+{
+    asm.Add(
+        mov(~ebp,eax),
+        add(esp,08),
+        mov(esp, ebp),
+        pop(ebp),
+        ret()
+        );
+}
+
+byte[] code = asm.Compile();
+```
+
 
