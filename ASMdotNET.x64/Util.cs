@@ -4,14 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ASMdotNET
+namespace ASMdotNET.x64
 {
-    public class Operation
+    class Util
     {
-        public string op;
-        public Operation(string operation)
+        public static bool isByte(int value)
         {
-            op = operation;
+            return (value <= byte.MaxValue && value >= byte.MinValue);
         }
     }
 }

@@ -1,54 +1,111 @@
-﻿using System;
+﻿using Binarysharp.Assemblers.Fasm;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static ASMdotNET.x86.Registers;
+using static ASMdotNET.Registers;
 
-namespace ASMdotNET.x86
+namespace ASMdotNET
 {
+    public enum TargetFramework
+    {
+        x86,
+        x64
+    }
+
     public class AssemblyCompiler
     {
         byte[] code = new byte[] { };
         List<Operation> operations = new List<Operation> { };
-        IntPtr Address;
+        IntPtr Address = IntPtr.Zero;
+        TargetFramework framework;
 
-        public AssemblyCompiler(IntPtr address)
+        public AssemblyCompiler(TargetFramework targetFramework, IntPtr address)
         {
+            framework = targetFramework; 
             Address = address;
         }
 
-        public AssemblyCompiler(int address)
+        public AssemblyCompiler(TargetFramework targetFramework, int address)
         {
+            framework = targetFramework;
             Address = (IntPtr)address;
         }
 
-        public byte[] Compile(params Operation[] statements)
+        public AssemblyCompiler(TargetFramework targetFramework, long address)
         {
-            if (statements.Length == 0)
+            framework = targetFramework;
+            Address = (IntPtr)address;
+        }
+
+        public AssemblyCompiler(TargetFramework targetFramework)
+        {
+            framework = targetFramework;
+        }
+
+        public byte[] Compile(params object[] statements)
+        {
+            var asm = new FasmNet();
+            if (framework == TargetFramework.x86)
             {
-                byte[] assembly = new byte[] { };
-                foreach (Operation statement in operations)
-                {
-                    byte[] operation = statement.compile(Address);
-                    Address = IntPtr.Add(Address, operation.Length);
-                    assembly = Combine(assembly, operation);
-                    //resetRegisterFlags();
-                }
-                return assembly;
+                asm.AddLine("use32");
             }
             else
             {
-                byte[] assembly = new byte[] { };
-                foreach (Operation statement in statements)
-                {
-                    byte[] operation = statement.compile(Address);
-                    Address = IntPtr.Add(Address, operation.Length);
-                    assembly = Combine(assembly, operation);
-                    //resetRegisterFlags();
-                }
-                return assembly;
+                asm.AddLine("use64");
             }
+
+            foreach (object op in statements)
+            {
+                if (op.GetType() == typeof(Operation))
+                {
+                    asm.AddLine(((Operation)op).op);
+                    Console.WriteLine(((Operation)op).op);
+                }
+                else if (op.GetType() == typeof(string))
+                {
+                    asm.AddLine((string)op);
+                    Console.WriteLine((string)op);
+                }
+                else
+                {
+                    throw new InvalidOperationException("Unsupported object in Compile");
+                }
+            }
+            return asm.Assemble(Address);
+        }
+
+        public byte[] Compile(IntPtr OverrideAddress, params object[] statements)
+        {
+            var asm = new FasmNet();
+            if (framework == TargetFramework.x86)
+            {
+                asm.AddLine("use32");
+            }
+            else
+            {
+                asm.AddLine("use64");
+            }
+
+            foreach (object op in statements)
+            {
+                if (op.GetType() == typeof(Operation))
+                {
+                    asm.AddLine(((Operation)op).op);
+                    Console.WriteLine(((Operation)op).op);
+                }
+                else if(op.GetType() == typeof(string))
+                {
+                    asm.AddLine((string)op);
+                    Console.WriteLine((string)op);
+                }
+                else
+                {
+                    throw new InvalidOperationException("Unsupported object in Compile");
+                }
+            }
+            return asm.Assemble(OverrideAddress);
         }
 
         public void Add(params Operation[] opcodes)

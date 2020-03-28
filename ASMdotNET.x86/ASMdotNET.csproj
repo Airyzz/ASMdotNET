@@ -7,8 +7,8 @@
     <ProjectGuid>{B11F0A6E-2BFA-4008-83E2-A20C2AFE1EE5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ASMdotNET.x86</RootNamespace>
-    <AssemblyName>ASMdotNET.x86</AssemblyName>
+    <RootNamespace>ASMdotNET</RootNamespace>
+    <AssemblyName>ASMdotNET</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Fasm.NET, Version=1.0.4939.27955, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\Fasm.NET.1.70.03.2\lib\Fasm.NET.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -42,20 +45,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compiler.cs" />
-    <Compile Include="Opcodes.cs" />
     <Compile Include="OperationList.cs" />
     <Compile Include="Operation.cs" />
-    <Compile Include="Operations\jmp.cs" />
-    <Compile Include="Operations\call.cs" />
-    <Compile Include="Operations\mov.cs" />
-    <Compile Include="Operations\ret.cs" />
-    <Compile Include="Operations\nop.cs" />
-    <Compile Include="Operations\pop.cs" />
-    <Compile Include="Operations\add.cs" />
-    <Compile Include="Operations\sub.cs" />
-    <Compile Include="Operations\push.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Registers.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

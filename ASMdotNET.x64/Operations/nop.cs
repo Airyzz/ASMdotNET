@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ASMdotNET.x86.Operations
+namespace ASMdotNET.x64.Operations
 {
-    public class ret : Operation
+    public class nop : Operation
     {
         public override byte[] compile(IntPtr address)
         {
-            return new byte[] { OpcodeBytes.ret };
+            return new byte[] { (byte)0x90 };
         }
     }
 }

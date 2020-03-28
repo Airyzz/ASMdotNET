@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{543BBC00-FA40-4ED1-B64D-6D22EC0B03BE}</ProjectGuid>
+    <ProjectGuid>{F8B1DBD1-46A8-4616-959E-1C401A9EC647}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>x86Tester</RootNamespace>
-    <AssemblyName>x86Tester</AssemblyName>
+    <RootNamespace>x64Tester</RootNamespace>
+    <AssemblyName>x64Tester</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -48,13 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ASMdotNET.x86\ASMdotNET.csproj">
-      <Project>{b11f0a6e-2bfa-4008-83e2-a20c2afe1ee5}</Project>
-      <Name>ASMdotNET</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

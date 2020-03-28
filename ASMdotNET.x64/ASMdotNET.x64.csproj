@@ -4,17 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{543BBC00-FA40-4ED1-B64D-6D22EC0B03BE}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>x86Tester</RootNamespace>
-    <AssemblyName>x86Tester</AssemblyName>
+    <ProjectGuid>{DEAC0C3B-601C-4B62-9660-65FEE2F8152F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ASMdotNET.x64</RootNamespace>
+    <AssemblyName>ASMdotNET.x64</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -43,18 +41,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="Compiler.cs" />
+    <Compile Include="Operation.cs" />
+    <Compile Include="OperationList.cs" />
+    <Compile Include="Operations\mov.cs" />
+    <Compile Include="Operations\nop.cs" />
+    <Compile Include="Registers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ASMdotNET.x86\ASMdotNET.csproj">
-      <Project>{b11f0a6e-2bfa-4008-83e2-a20c2afe1ee5}</Project>
-      <Name>ASMdotNET</Name>
-    </ProjectReference>
+    <Compile Include="Util.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
