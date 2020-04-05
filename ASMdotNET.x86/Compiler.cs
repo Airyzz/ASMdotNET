@@ -17,7 +17,7 @@ namespace ASMdotNET
     public class AssemblyCompiler
     {
         byte[] code = new byte[] { };
-        List<Operation> operations = new List<Operation> { };
+        List<object> operations = new List<object> { };
         IntPtr Address = IntPtr.Zero;
         TargetFramework framework;
 
@@ -46,7 +46,7 @@ namespace ASMdotNET
 
         public byte[] Compile(params object[] statements)
         {
-            var asm = new FasmNet();
+            var asm = new FasmNet(100000, 100);
             if (framework == TargetFramework.x86)
             {
                 asm.AddLine("use32");
@@ -56,17 +56,36 @@ namespace ASMdotNET
                 asm.AddLine("use64");
             }
 
+
+            if(statements.Length == 0)
+            {
+                foreach (object op in operations)
+                {
+                    if (op.GetType() == typeof(Operation))
+                    {
+                        asm.AddLine(((Operation)op).op);
+                    }
+                    else if (op.GetType() == typeof(string))
+                    {
+                        asm.AddLine((string)op);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException("Unsupported object in Compile");
+                    }
+                }
+                return asm.Assemble(Address);
+            }
+
             foreach (object op in statements)
             {
                 if (op.GetType() == typeof(Operation))
                 {
                     asm.AddLine(((Operation)op).op);
-                    Console.WriteLine(((Operation)op).op);
                 }
                 else if (op.GetType() == typeof(string))
                 {
                     asm.AddLine((string)op);
-                    Console.WriteLine((string)op);
                 }
                 else
                 {
@@ -108,9 +127,9 @@ namespace ASMdotNET
             return asm.Assemble(OverrideAddress);
         }
 
-        public void Add(params Operation[] opcodes)
+        public void Add(params object[] opcodes)
         {
-            foreach(Operation operation in opcodes)
+            foreach(object operation in opcodes)
             {
                 operations.Add(operation);
             }

@@ -121,6 +121,11 @@ namespace ASMdotNET
             return new Operation($"{name} {Value}");
         }
 
+        private static Operation assembleString(string name, int Value, Register R1)
+        {
+            return new Operation($"{name} [{Value}],{R1}");
+        }
+
         /// <summary>
         /// No Operation
         /// </summary>
@@ -150,6 +155,11 @@ namespace ASMdotNET
         public static Operation mov(Register R1, Register R2)
         {
             return assembleString("mov", R1, R2);
+        }
+
+        public static Operation mov(int Address, Register R1)
+        {
+            return assembleString("mov", Address, R1);
         }
 
         /// <summary>
